@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JC Gibbs — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --border: #1e1e2e;
+    --accent: #00e5ff; --accent2: #ff6b35; --text: #e8e8f0;
+    --muted: #6b6b8a; --card: #15151f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem; border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85); backdrop-filter: blur(12px);
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.15em; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 3rem 4rem; position: relative; overflow: hidden; }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+    top: 50%; left: 60%; transform: translate(-50%, -50%); pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 900px; }
+  .hero-tag { display: inline-block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,229,255,0.3); padding: 0.35rem 0.9rem; margin-bottom: 2rem; animation: fadeUp 0.6s ease both; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; animation: fadeUp 0.6s 0.1s ease both; }
+  .hero h1 .accent { color: var(--accent); }
+  .hero h1 .accent2 { color: var(--accent2); }
+  .hero-sub { margin-top: 2rem; font-size: 1rem; color: var(--muted); max-width: 520px; line-height: 1.8; animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-cta { display: flex; gap: 1rem; margin-top: 2.5rem; animation: fadeUp 0.6s 0.3s ease both; }
+  .btn-primary { background: var(--accent); color: var(--bg); padding: 0.85rem 2rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; display: inline-block; }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--text); padding: 0.85rem 2rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; display: inline-block; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats { display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); animation: fadeUp 0.6s 0.4s ease both; flex-wrap: wrap; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+  section { padding: 6rem 3rem; }
+  .section-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 3rem; line-height: 1.1; }
+  #skills { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+  .skill-card { background: var(--card); padding: 2rem; transition: background 0.2s; }
+  .skill-card:hover { background: #1a1a28; }
+  .skill-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .skill-title { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 0.75rem; text-transform: uppercase; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.3rem 0.6rem; border: 1px solid var(--border); color: var(--muted); }
+  .exp-list { display: flex; flex-direction: column; }
+  .exp-item { display: grid; grid-template-columns: 180px 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-date { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; padding-top: 0.2rem; }
+  .exp-role { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .exp-company { font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .exp-bullets li { font-size: 0.8rem; color: var(--muted); line-height: 1.6; padding-left: 1.2rem; position: relative; }
+  .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent2); }
+  #education { background: var(--surface); }
+  .edu-main { border: 1px solid var(--border); padding: 2.5rem; margin-bottom: 1.5px; position: relative; overflow: hidden; }
+  .edu-main::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+  .edu-degree { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .edu-school { font-size: 0.8rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .edu-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .edu-meta-item { font-size: 0.7rem; color: var(--muted); }
+  .edu-meta-item span { display: block; color: var(--text); font-size: 0.85rem; font-family: 'Syne', sans-serif; font-weight: 700; }
+  .honors-badge { display: inline-block; background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.3); color: var(--accent2); font-size: 0.65rem; letter-spacing: 0.12em; padding: 0.3rem 0.7rem; margin-top: 1rem; text-transform: uppercase; }
+  .edu-transfers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+  .edu-transfer-item { background: var(--card); padding: 1.25rem 1.5rem; font-size: 0.75rem; color: var(--muted); }
+  .edu-transfer-item strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 0.25rem; font-family: 'Syne', sans-serif; }
+  .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-big { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; }
+  .contact-big .accent { color: var(--accent); }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border); text-decoration: none; color: var(--text); font-size: 0.8rem; transition: all 0.2s; }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(4px); }
+  .contact-link-icon { font-size: 1.1rem; width: 1.5rem; text-align: center; }
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; } .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; } .hero { padding: 6rem 1.5rem 3rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .contact-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+    .edu-transfers { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">JC GIBBS</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1>JC<br><span class="accent">GIBBS</span><span class="accent2">.</span></h1>
+    <p class="hero-sub">Applied Business &amp; Technology student at Kansas State University — blending IT infrastructure, web development, and business operations into one rare skill set. Former paramedic. Built for high-stakes environments.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#experience" class="btn-ghost">View My Work</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">3.515</div><div class="stat-label">Cumulative GPA</div></div>
+      <div><div class="stat-num">17+</div><div class="stat-label">Years Experience</div></div>
+      <div><div class="stat-num">3×</div><div class="stat-label">Semester Honors</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label">What I bring</div>
+  <div class="section-title reveal">Technical Skills</div>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="skill-icon">⌨️</div>
+      <div class="skill-title">Programming &amp; Dev</div>
+      <div class="skill-tags">
+        <span class="tag">HTML / CSS</span><span class="tag">JavaScript</span>
+        <span class="tag">Front-End Dev</span><span class="tag">Back-End Dev</span>
+        <span class="tag">Web Fundamentals</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🖥️</div>
+      <div class="skill-title">Systems &amp; Infrastructure</div>
+      <div class="skill-tags">
+        <span class="tag">Network Administration</span><span class="tag">Hardware &amp; Networking</span>
+        <span class="tag">Systems Admin</span><span class="tag">Database Management</span>
+        <span class="tag">Systems &amp; Software</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <div class="skill-title">Business &amp; Management</div>
+      <div class="skill-tags">
+        <span class="tag">Operations Management</span><span class="tag">IT Management</span>
+        <span class="tag">Sales Management</span><span class="tag">Financial Accounting</span>
+        <span class="tag">Supervisory Mgmt</span><span class="tag">Labor Relations</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-title">Design &amp; Communication</div>
+      <div class="skill-tags">
+        <span class="tag">Visual Literacy</span><span class="tag">Technical Writing</span>
+        <span class="tag">UX / Accessibility</span><span class="tag">User-Centered Design</span>
+        <span class="tag">Leadership Studies</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label">Career history</div>
+  <div class="section-title reveal">Work Experience</div>
+  <div class="exp-list">
+    <div class="exp-item reveal">
+      <div class="exp-date">Jul 2022 – Present</div>
+      <div>
+        <div class="exp-role">Freelance IT Support</div>
+        <div class="exp-company">Survival On the Home Front · Kansas City, MO</div>
+        <ul class="exp-bullets">
+          <li>Technical support and network administration for entrepreneurs and nonprofits</li>
+          <li>Full-stack web development to enhance client digital platforms</li>
+          <li>Administrative assistance to optimize operational efficiency</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Mar 2022 – Apr 2023</div>
+      <div>
+        <div class="exp-role">Technology Intern</div>
+        <div class="exp-company">Blue Symphony · Kansas City, MO</div>
+        <ul class="exp-bullets">
+          <li>Technical and administrative support via ticket-based system</li>
+          <li>Database queries, bug resolution, and site performance optimization</li>
+          <li>Implemented user-centered design and maintained accessibility standards</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">May 2018 – Jun 2020</div>
+      <div>
+        <div class="exp-role">Paramedic</div>
+        <div class="exp-company">Saint Luke's Community Hospital · Kansas City, MO</div>
+        <ul class="exp-bullets">
+          <li>Emergency medical care and critical assessments in pre-hospital environments</li>
+          <li>Life-saving interventions and patient stabilization under high pressure</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Sep 2014 – Jun 2018</div>
+      <div>
+        <div class="exp-role">Paramedic</div>
+        <div class="exp-company">Northland Regional Ambulance District · Platte City, MO</div>
+        <ul class="exp-bullets">
+          <li>Advanced emergency care and critical interventions in pre-hospital settings</li>
+          <li>Collaborated with emergency teams to optimize patient outcomes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Nov 2013 – Sep 2014</div>
+      <div>
+        <div class="exp-role">Paramedic</div>
+        <div class="exp-company">Kansas City Fire Department · Kansas City, MO</div>
+        <ul class="exp-bullets">
+          <li>Advanced emergency medical care and critical life-saving interventions</li>
+          <li>Safe and efficient patient transport maintaining high standards of care</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Feb 2006 – Nov 2013</div>
+      <div>
+        <div class="exp-role">EMT / IT Support</div>
+        <div class="exp-company">St. Louis Fire and EMS · St. Louis, MO</div>
+        <ul class="exp-bullets">
+          <li>Pre-hospital patient care alongside life-saving interventions</li>
+          <li>Configured and installed computer systems; troubleshooting and technical support</li>
+          <li>Network administration for IT infrastructure maintenance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-label">Academic record</div>
+  <div class="section-title reveal">Education</div>
+  <div class="edu-main reveal">
+    <div class="edu-degree">B.S. Applied Business and Technology</div>
+    <div class="edu-school">Kansas State University · Manhattan, KS · In Progress</div>
+    <div class="edu-meta">
+      <div class="edu-meta-item">Option<span>Technology Management</span></div>
+      <div class="edu-meta-item">Cumulative GPA<span>3.515</span></div>
+      <div class="edu-meta-item">Credits Earned<span>68</span></div>
+    </div>
+    <div class="honors-badge">🏅 Semester Honors — Fall 2021 · Fall 2022 · Spring 2023</div>
+  </div>
+  <div class="edu-transfers reveal">
+    <div class="edu-transfer-item"><strong>Hutchinson Community College</strong>Pre-Nursing · 27 transfer credits</div>
+    <div class="edu-transfer-item"><strong>Harris-Stowe State University</strong>General Science · 17 transfer credits</div>
+    <div class="edu-transfer-item"><strong>Pitt Community College</strong>General Science · 25 transfer credits</div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-wrapper">
+    <div>
+      <div class="section-label">Let's connect</div>
+      <div class="contact-big reveal">Ready to<br>work<br><span class="accent">together?</span></div>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:Amnu1976@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉</span>Amnu1976@gmail.com
+      </a>
+      <a href="tel:5015162823" class="contact-link">
+        <span class="contact-link-icon">☎</span>501-516-2823
+      </a>
+      <a href="https://github.com/jcgibbskc" target="_blank" class="contact-link">
+        <span class="contact-link-icon">⌥</span>github.com/jcgibbskc
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 JC GIBBS</span>
+  <span>Kansas City, Missouri</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
